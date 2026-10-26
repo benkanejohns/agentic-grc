@@ -12,7 +12,9 @@
 
 ## How to use this document
 
-Part 1 is written to be pasted directly into a GRC agent's system prompt: it is instruction, not description. Part 2 is reference knowledge the agent should be grounded on; per Principle 6, prefer retrieving against it over pasting it wholesale into every context window.
+Part 1 is written as instruction, not description, but it has two audiences, not one. Some of it belongs in a GRC agent's own system prompt: the model needs to know its role (parse and classify, don't conclude; cite sources; state limitations) so that what it produces is something a surrounding system can actually check. But the directives describing a hard guarantee, determinism, human sign-off, registered scope, pass/fail decided by deterministic logic, are not satisfied by asking the model nicely. Those have to be enforced by the system around the model: access control on consequential actions, a rules engine the model's output is validated against, a registry check before the agent acts at all. A system prompt is advisory; a model can still drift from it, get overridden by an injected instruction, or simply get it wrong. Treat the prompt as telling the model what its job is. Treat the surrounding system as what actually makes sure the job was done.
+
+Part 2 is reference knowledge the agent should be grounded on; per Principle 6, prefer retrieving against it over pasting it wholesale into every context window.
 
 ---
 
