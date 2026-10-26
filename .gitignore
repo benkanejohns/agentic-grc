@@ -16,3 +16,4 @@ node_modules/
 # editor
 .vscode/*
 !.vscode/extensions.json
+.gstack/

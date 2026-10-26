@@ -1,0 +1,16 @@
+---
+title: 'Episode 1: A User Access Review agent, built to the Standard'
+description: 'Claude classifies, a deterministic rules engine decides, a named human signs off. The first real agent built to the Agentic GRC Standard, including where it still gets things wrong.'
+date: 2026-10-01
+kind: video
+video: 'https://www.youtube.com/watch?v=REPLACE_WITH_VIDEO_ID'
+draft: true
+---
+
+*Draft post. Set `draft: false` and replace the video URL once the episode is recorded and published.*
+
+The first working thing built to [the Standard](/standard/): a User Access Review agent for AWS IAM. Claude classifies each access grant's privilege level and whether the role fits the user's department, forced through a fixed schema, never free text. A plain Python rules engine, not the model, decides what gets flagged. Every run is logged so a finding can be replayed, not regenerated. The reviewer-decision column stays blank.
+
+The episode walks through the agent catching real problems (stale admin access, a role that doesn't match its department), and is honest about where it doesn't work yet: classification runs off the role *name*, not the actual IAM policy behind it, a real, stated limitation, not a hypothetical one.
+
+Code: [github.com/benkanejohns/agentic-grc-access-review](https://github.com/benkanejohns/agentic-grc-access-review). MIT licensed, runs against a sample file with zero AWS setup required.
