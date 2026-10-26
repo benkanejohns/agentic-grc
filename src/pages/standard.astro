@@ -1,0 +1,40 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+
+const entry = await getEntry('standard', 'agentic-grc-standard');
+if (!entry) throw new Error('docs/agentic-grc-standard.md not found');
+const { Content } = await render(entry);
+---
+
+<Base
+  title="The Agentic GRC Standard | Agentic GRC"
+  description="The operating principles and domain grounding every GRC agentic system is built to, written to be read by the system itself."
+  path="/standard/"
+>
+  <div class="mx-auto max-w-[860px] px-6">
+    <div class="session mt-16">
+      <div class="session-titlebar">
+        <div class="session-dot"></div>
+        <div class="session-dot"></div>
+        <div class="session-dot"></div>
+        <span>agentic-grc :: standard</span>
+      </div>
+      <div class="session-body">
+        <p class="promptline">
+          <span class="p">$</span> cat docs/agentic-grc-standard.md
+        </p>
+        <p class="promptline">
+          <span class="p">$</span> git clone <a
+            class="text-teal underline underline-offset-2"
+            href="https://github.com/benkanejohns/agentic-grc-standard"
+            >github.com/benkanejohns/agentic-grc-standard</a
+          >
+        </p>
+        <div class="prose-session">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>

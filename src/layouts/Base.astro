@@ -1,0 +1,140 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/inter/wght-italic.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/400-italic.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource/ibm-plex-mono/600.css';
+import '@/styles/global.css';
+import ThemeToggle from '@/components/ThemeToggle';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path portion of the canonical URL, e.g. "/releases/my-post/" */
+  path?: string;
+  ogType?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  path = Astro.url.pathname,
+  ogType = 'website',
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site);
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Agentic GRC"
+      href={new URL('rss.xml', Astro.site)}
+    />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0f1317" />
+
+    <script is:inline>
+      // Runs before paint to avoid a theme flash. Dark is the default;
+      // stored preference wins, then system preference.
+      (function () {
+        var stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch (e) {}
+        var light =
+          stored === 'light' ||
+          (stored === null &&
+            window.matchMedia('(prefers-color-scheme: light)').matches);
+        document.documentElement.classList.toggle('light', light);
+      })();
+    </script>
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Agentic GRC" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+  </head>
+  <body class="min-h-screen">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-panel focus:px-3 focus:py-2 focus:font-mono focus:text-xs focus:text-txt"
+    >
+      Skip to content
+    </a>
+
+    <header
+      class="sticky top-0 z-10 border-b border-line backdrop-blur-md" style="background: var(--scrim);"
+    >
+      <div
+        class="mx-auto flex max-w-[860px] items-center justify-between px-6 py-3.5"
+      >
+        <a
+          href="/"
+          class="font-mono text-[13px] tracking-[0.14em] text-txt no-underline"
+        >
+          agentic<b class="font-semibold text-teal">grc</b>.io
+        </a>
+        <nav class="flex items-center" aria-label="Site">
+          <a
+            href="/"
+            class="ml-4 rounded px-2 py-2 font-mono text-xs tracking-[0.08em] text-dim hover:text-txt sm:ml-6 sm:px-3"
+          >
+            MANIFESTO
+          </a>
+          <a
+            href="/standard/"
+            class="ml-1 rounded px-2 py-2 font-mono text-xs tracking-[0.08em] text-dim hover:text-txt sm:px-3"
+          >
+            STANDARD
+          </a>
+          <a
+            href="/releases/"
+            class="ml-1 rounded px-2 py-2 font-mono text-xs tracking-[0.08em] text-dim hover:text-txt sm:px-3"
+          >
+            RELEASES
+          </a>
+          <ThemeToggle client:load />
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="mt-24 border-t border-line bg-panel2/60">
+      <div
+        class="mx-auto flex max-w-[860px] flex-col gap-2 px-6 py-7 font-mono text-xs text-dim sm:flex-row sm:items-center sm:justify-between"
+      >
+        <p>
+          maintained_by:
+          <a
+            href="https://www.linkedin.com/in/ben-johns-b0545612/"
+            class="text-teal underline underline-offset-2"
+            rel="me">Ben Johns</a
+          > // melbourne
+        </p>
+        <p class="flex gap-5">
+          <a href="/rss.xml" class="hover:text-txt">rss</a>
+          <a href="https://complyleft.com" class="hover:text-txt">complyleft</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

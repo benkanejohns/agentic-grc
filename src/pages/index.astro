@@ -1,0 +1,280 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const principles = [
+  {
+    arg: 'principle_01_determinism',
+    assertion: 'same inputs, same outputs',
+    title: 'Determinism over improvisation',
+    body: 'A risk assessment that produces different results on different runs is not an assessment, it is an opinion generator. Agentic GRC systems are engineered so that the same inputs produce the same outputs. Where a language model sits in the workflow, it is constrained: structured knowledge, fixed retrieval, controlled generation. Creativity is a defect in this context, not a feature.',
+  },
+  {
+    arg: 'principle_02_parse_not_decide',
+    assertion: 'parses, classifies, never decides',
+    title: 'The model reads, the human decides',
+    body: 'Most GRC effort is not the judgement, it is the translation before it: reading a policy to see if it addresses a control, mapping a ticket to a framework clause, pulling obligations out of regulatory prose. That is where the language model works: parsing unstructured input into a fixed schema, classifying it against a closed taxonomy, turning regulatory prose into discrete requirements a human signs off. It does not decide. The rules engine, the scoring, and the pass/fail thresholds stay deterministic, and that split is what makes the result defensible to an auditor.',
+  },
+  {
+    arg: 'principle_03_evidence',
+    assertion: 'every output traces to source',
+    title: 'Evidence is the product',
+    body: 'Every output must trace to its sources. A residual risk score without a visible chain back to the framework, the control, and the context that produced it is worthless in a regulated environment. If a second line reviewer or a regulator asks "why", the system must be able to answer with citations, not vibes.',
+  },
+  {
+    arg: 'principle_04_accountability',
+    assertion: 'human decision points explicit',
+    title: 'Human accountability does not transfer',
+    body: 'Agents perform work. Humans own decisions. No agent signs off a risk acceptance, approves a control exception, or attests to a regulator. The workflow makes the human decision point explicit and keeps it there. Anyone selling you autonomous risk sign-off is selling you a future enforcement action.',
+  },
+  {
+    arg: 'principle_05_agents_are_controls',
+    assertion: 'assessed, tested, monitored',
+    title: 'Agents are controls, and controls get assessed',
+    body: "An agent system operating inside a risk function is itself a system that needs governing: risk assessed before deployment, tested against known cases, monitored in operation, and reviewed when it drifts. We apply ISO 42001 thinking to our own tooling before we point it at anyone else's. Eating your own cooking is the price of credibility.",
+  },
+  {
+    arg: 'principle_06_structured_knowledge',
+    assertion: 'chunked, related, versioned',
+    title: 'Structured knowledge beats raw prompting',
+    body: 'Pasting a framework into a context window is not engineering. Agentic GRC systems are built on frameworks and obligations that have been deliberately structured: chunked, related, and versioned, so that retrieval is precise and outputs are grounded. The knowledge layer is where most of the real work lives, and most of the quality comes from.',
+  },
+  {
+    arg: 'principle_07_working_systems',
+    assertion: 'demos run, limitations stated',
+    title: 'Working systems over slideware',
+    body: 'This discipline is defined by practitioners who build. A demo that runs beats a whitepaper that speculates. Claims are made about systems that exist, at the scale they actually operate, with their limitations stated plainly. The field has enough AI hype. It does not need more from the people whose job is scepticism.',
+  },
+];
+---
+
+<Base
+  title="Agentic GRC | The Manifesto"
+  description="Agentic GRC is the discipline of building AI agent systems that perform risk and compliance work, with the determinism, evidence, and accountability that regulated environments demand."
+>
+  <div class="mx-auto max-w-[860px] px-6">
+    <!-- 01 · the session opens -->
+    <div class="session mt-16">
+      <div class="session-titlebar">
+        <div class="session-dot"></div>
+        <div class="session-dot"></div>
+        <div class="session-dot"></div>
+        <span>agentic-grc :: founding_session</span>
+      </div>
+      <div class="session-body">
+        <p class="promptline"><span class="p">$</span> cat MANIFESTO.md</p>
+        <h1
+          class="text-[clamp(26px,4.4vw,38px)] font-semibold leading-[1.35] tracking-[-0.01em]"
+        >
+          Agentic GRC is the discipline of building AI agent systems that
+          perform risk and compliance work, with the <span
+            class="text-teal">determinism</span
+          >, <span class="text-teal">evidence</span>, and <span
+            class="text-teal">accountability</span
+          > that regulated environments demand.
+        </h1>
+        <p class="mt-[22px] text-[17px] text-dim">
+          Not chatbots that summarise policies. Not copilots that draft
+          paragraphs. Agent systems that execute real risk workflows: assessing
+          risks, mapping controls, scoring residual risk, gathering evidence,
+          and producing outputs that a second line, an auditor, or a regulator
+          can trace and challenge.
+        </p>
+        <div class="statusline mt-[26px]">
+          <div><span class="ok">[ OK ]</span> discipline.defined</div>
+          <div>
+            <span class="info">[INFO]</span> audience: practitioners, regulated
+            environments
+          </div>
+          <div>
+            <span class="warn">[WARN]</span> vendor definitions detected :: see
+            diff below
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 · why now, as a thinking block -->
+    <section class="mt-14" aria-label="Why now">
+      <div class="thinking">
+        <p class="think-head">
+          <span class="spark">&#10035;</span> Thinking&hellip; why does this
+          discipline need to exist now?
+        </p>
+        <p>Three things are true at the same time.</p>
+        <p>
+          First, most GRC work is manual, sampled, and retrospective. Risk
+          assessments take weeks. Control mapping is done in spreadsheets.
+          Evidence is gathered once a year and stale the day after. The people
+          doing this work are capable, but the methods have not changed in
+          twenty years.
+        </p>
+        <p>
+          Second, AI has arrived in every organisation, including the risk
+          function, whether the risk function is ready or not. Right now,
+          adoption in GRC splits into two failure modes. Some teams ban it and
+          fall further behind the businesses they are meant to challenge.
+          Others adopt it ungoverned, pasting confidential risk data into
+          consumer tools and accepting non-deterministic outputs as findings.
+        </p>
+        <p>
+          Third, a wave of platforms has started selling "agentic GRC" as a
+          product category, and their definition is autonomy: agents that
+          execute complete workflows on their own. Autonomy makes an attractive
+          demo and a dangerous operating model in a regulated environment. A
+          term this consequential should be defined by the people accountable
+          for the outcomes, not by the people selling the tooling.
+        </p>
+        <p>
+          None of this is acceptable. A risk function that cannot govern its
+          own use of AI has no standing to challenge anyone else's, and a
+          discipline defined by sales copy is not a discipline. Agent systems
+          demand the same discipline we expect of any other control, and that
+          is to build them properly. That is Agentic GRC.
+        </p>
+        <p class="think-foot">
+          <span class="spark">&#10035;</span> Reasoned about the state of GRC
+          &middot; 2 failure modes observed: ban it or use it ungoverned
+          &middot; vendor definition rejected &middot; conclusion: build agent
+          systems properly
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 · the principles, as a verification run -->
+    <section class="mt-16" aria-label="The principles">
+      <p class="toolline">
+        <span class="bullet">&#9679;</span>
+        <span class="fn">Verify</span>(<span class="arg">principles/</span>)
+        <span class="meta">&middot; 7 checks</span>
+      </p>
+      {
+        principles.map((p) => (
+          <div class="verify">
+            <p class="vline">
+              <span class="bullet">&#9679;</span>{' '}
+              <span class="fn">Verify</span>(<span class="arg">{p.arg}</span>)
+            </p>
+            <p class="vresult">
+              <span class="elbow">&#8990;</span>
+              <span class="pass">PASS</span>
+              <span>{p.assertion}</span>
+            </p>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        ))
+      }
+    </section>
+
+    <!-- 04 · what it is not, as a diff -->
+    <section class="mt-16" aria-label="What Agentic GRC is not">
+      <p class="toolline">
+        <span class="bullet">&#9679;</span>
+        <span class="fn">Update</span>(<span class="arg">agentic-grc.md</span>)
+        <span class="meta">&middot; rejecting the vendor definition</span>
+      </p>
+      <div class="diff">
+        <div class="diff-head">@@ what agentic grc is not @@</div>
+        <div class="hunk minus">
+          <div class="gutter">&minus;</div>
+          <div class="hunk-body">
+            <h4>REJECTED :: REPLACEMENT OF RISK PROFESSIONALS</h4>
+            <p>
+              It is not the replacement of risk professionals. It removes the
+              mechanical work so that judgement, challenge, and stakeholder
+              engagement, the parts that were always the real job, get the
+              time they deserve.
+            </p>
+          </div>
+        </div>
+        <div class="hunk minus">
+          <div class="gutter">&minus;</div>
+          <div class="hunk-body">
+            <h4>REJECTED :: AUTONOMY</h4>
+            <p>
+              It is not autonomy. Every workflow described here has humans
+              making the decisions that matter.
+            </p>
+          </div>
+        </div>
+        <div class="hunk minus">
+          <div class="gutter">&minus;</div>
+          <div class="hunk-body">
+            <h4>REJECTED :: VENDOR CATEGORY</h4>
+            <p>
+              It is not a vendor category, although vendors are already using
+              the words. Autonomy demos well, so autonomy is what gets sold.
+              The discipline is the set of principles above, and it applies
+              whatever you build or buy. If a system cannot show you its
+              evidence chain, cannot give you the same answer twice, or asks
+              you to delegate a decision a human must own, then whatever the
+              label says, it is not Agentic GRC.
+            </p>
+          </div>
+        </div>
+        <div class="hunk plus">
+          <div class="gutter">+</div>
+          <div class="hunk-body">
+            <h4>ACCEPTED :: THE STANDARD</h4>
+            <p>Build agents you could defend to your regulator.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · the invitation, as a todo list -->
+    <section class="mt-16" aria-label="The invitation">
+      <p class="toolline">
+        <span class="bullet">&#9679;</span>
+        <span class="fn">Update Todos</span>
+        <span class="meta">&middot; your move</span>
+      </p>
+      <p class="mb-[1.35em]">
+        If you work in risk, compliance, or assurance in a regulated
+        environment, and you believe the work can be faster, more consistent,
+        and better evidenced without becoming less rigorous, this discipline is
+        for you.
+      </p>
+      <p>Start with one workflow you own. Then:</p>
+      <div class="todos mt-6">
+        <div class="todo done">
+          <span class="elbow">&#8990;</span><span class="box">&#9745;</span>Define
+          the discipline
+        </div>
+        <div class="todo">
+          <span class="elbow">&nbsp;&nbsp;</span><span class="box">&#9744;</span>Structure
+          the knowledge
+        </div>
+        <div class="todo">
+          <span class="elbow">&nbsp;&nbsp;</span><span class="box">&#9744;</span>Constrain
+          the generation
+        </div>
+        <div class="todo">
+          <span class="elbow">&nbsp;&nbsp;</span><span class="box">&#9744;</span>Make
+          the evidence chain visible
+        </div>
+        <div class="todo">
+          <span class="elbow">&nbsp;&nbsp;</span><span class="box">&#9744;</span>Keep
+          the human decision explicit
+        </div>
+        <div class="todo">
+          <span class="elbow">&nbsp;&nbsp;</span><span class="box">&#9744;</span>Show
+          your work
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · closing response -->
+    <section class="mt-[72px] pt-2" aria-label="The standard">
+      <p class="font-mono text-[15px] text-teal">&#9679;</p>
+      <p
+        class="mt-3.5 text-[clamp(22px,3.4vw,30px)] font-semibold leading-[1.4] tracking-[-0.01em]"
+      >
+        Build agents you could defend to your regulator.<br />
+        <span class="text-teal"
+          >That is the standard. That is Agentic GRC.</span
+        ><span class="cursor"></span>
+      </p>
+    </section>
+  </div>
+</Base>

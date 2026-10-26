@@ -1,0 +1,482 @@
+@import "tailwindcss";
+
+/*
+  Design tokens: agenticgrc.io "Trace Session"
+  The site is a governed agent session: dark terminal ground, faint
+  drafting grid, editor-token accents. Single (dark) theme by design.
+*/
+:root {
+  --bg: #0f1317;
+  --panel: #151b21;
+  --panel2: #11161b;
+  --txt: #dbe2e8;
+  --dim: #8b98a5;
+  --faint: #4a5560;
+  --teal: #4fd6be;
+  --amber: #e0af68;
+  --blue: #7aa2f7;
+  --red: #f7768e;
+  --green: #9ece6a;
+  --line: #232c34;
+  --grid: rgba(130, 160, 185, 0.035);
+  --txt2: #b6c0ca;      /* secondary body text in session components */
+  --plus-ink: #cfe0c0;  /* diff added-line text */
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  --scrim: rgba(15, 19, 23, 0.92);
+
+  /* shadcn/ui token mapping */
+  --background: var(--bg);
+  --foreground: var(--txt);
+  --card: var(--panel);
+  --card-foreground: var(--txt);
+  --popover: var(--panel);
+  --popover-foreground: var(--txt);
+  --primary: var(--teal);
+  --primary-foreground: #0f1317;
+  --secondary: #1a222a;
+  --secondary-foreground: var(--txt);
+  --muted: #1a222a;
+  --muted-foreground: var(--dim);
+  --accent: #1a222a;
+  --accent-foreground: var(--txt);
+  --destructive: var(--red);
+  --destructive-foreground: #0f1317;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--teal);
+  --radius: 0.5rem;
+}
+
+/* Paper terminal: light mode overrides. All derived tokens cascade. */
+.light {
+  --bg: #f2f4f1;
+  --panel: #fbfcfa;
+  --panel2: #e9ece7;
+  --txt: #1e2a33;
+  --dim: #5b6a74;
+  --faint: #97a3ac;
+  --teal: #0c8068;
+  --amber: #9a6c08;
+  --blue: #3a5fc0;
+  --red: #c03b52;
+  --green: #4d7d1f;
+  --line: #d5dad4;
+  --grid: rgba(40, 70, 90, 0.045);
+  --txt2: #3f4e59;
+  --plus-ink: #3c5c16;
+  --shadow: 0 8px 30px rgba(20, 40, 50, 0.08);
+  --scrim: rgba(242, 244, 241, 0.92);
+  --primary-foreground: #ffffff;
+  --destructive-foreground: #ffffff;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel2: var(--panel2);
+  --color-txt: var(--txt);
+  --color-dim: var(--dim);
+  --color-faint: var(--faint);
+  --color-teal: var(--teal);
+  --color-amber: var(--amber);
+  --color-blue: var(--blue);
+  --color-red: var(--red);
+  --color-green: var(--green);
+  --color-line: var(--line);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  color: var(--txt);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: var(--teal);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Session vocabulary: reusable classes for the manifesto and posts */
+/* ---------------------------------------------------------------- */
+
+/* Terminal session window */
+.session {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.session-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--panel2);
+  border-bottom: 1px solid var(--line);
+}
+.session-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--faint);
+}
+.session-titlebar span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--dim);
+  margin-left: 8px;
+}
+.session-body {
+  padding: 28px 28px 32px;
+}
+.promptline {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 18px;
+}
+.promptline .p {
+  color: var(--teal);
+}
+.statusline {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 2;
+  color: var(--dim);
+}
+.statusline .ok { color: var(--teal); }
+.statusline .warn { color: var(--amber); }
+.statusline .info { color: var(--blue); }
+
+/* Tool call line */
+.toolline {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}
+.toolline .bullet { color: var(--teal); }
+.toolline .fn { color: var(--txt); font-weight: 500; }
+.toolline .arg { color: var(--blue); }
+.toolline .meta { font-size: 12px; color: var(--faint); }
+
+/* Thinking block */
+.thinking {
+  border-left: 2px solid var(--faint);
+  padding-left: 22px;
+}
+.think-head {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--dim);
+  font-style: italic;
+  margin-bottom: 16px;
+}
+.think-head .spark,
+.think-foot .spark {
+  color: var(--amber);
+  font-style: normal;
+  font-size: 20px;
+}
+.thinking p {
+  color: var(--txt2);
+  font-size: 16.5px;
+  margin-bottom: 1.35em;
+}
+.thinking p:last-child { margin-bottom: 0; }
+.think-foot {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--faint);
+  font-style: italic;
+  margin-top: 20px;
+}
+
+/* Verification card */
+.verify {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+.vline {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.vline .bullet { color: var(--teal); }
+.vline .fn { color: var(--txt); }
+.vline .arg { color: var(--blue); }
+.vresult {
+  display: flex;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  margin-bottom: 12px;
+  color: var(--dim);
+}
+.vresult .elbow { color: var(--faint); }
+.vresult .pass { color: var(--green); font-weight: 600; }
+.verify h3 {
+  font-size: 19.5px;
+  font-weight: 600;
+  margin-bottom: 9px;
+  letter-spacing: -0.005em;
+}
+.verify p {
+  font-size: 16px;
+  color: var(--txt2);
+  margin: 0;
+}
+
+/* Diff block */
+.diff {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.diff-head {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--dim);
+  background: var(--panel2);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 16px;
+}
+.hunk {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+}
+.hunk:last-child { border-bottom: none; }
+.hunk .gutter {
+  flex: 0 0 44px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+}
+.hunk.minus { background: rgba(247, 118, 142, 0.06); }
+.hunk.minus .gutter { color: var(--red); }
+.hunk.plus { background: rgba(158, 206, 106, 0.07); }
+.hunk.plus .gutter { color: var(--green); }
+.hunk-body { padding: 18px 22px 20px 0; }
+.hunk h4 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+.hunk.minus h4 { color: var(--red); }
+.hunk.plus h4 { color: var(--green); }
+.hunk p { font-size: 15.5px; color: var(--txt2); margin: 0; }
+.hunk.plus p { color: var(--plus-ink); font-weight: 450; }
+
+/* Todo widget */
+.todos {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 20px 24px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 2.1;
+}
+.todos .elbow { color: var(--faint); margin-right: 8px; }
+.todo { color: var(--txt); }
+.todo .box { color: var(--teal); margin-right: 10px; }
+.todo.done {
+  color: var(--dim);
+  text-decoration: line-through;
+  text-decoration-color: var(--faint);
+}
+.todo.done .box { color: var(--green); }
+
+/* Blinking cursor */
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background: var(--teal);
+  vertical-align: text-bottom;
+  margin-left: 6px;
+  animation: blink 1.1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .cursor { animation: none; }
+}
+
+/* ---------------------------------------------------------------- */
+/* Long-form prose for articles                                     */
+/* ---------------------------------------------------------------- */
+.prose-session {
+  font-size: 17px;
+  line-height: 1.75;
+}
+.prose-session p { margin-bottom: 1.35em; }
+.prose-session p:last-child { margin-bottom: 0; }
+.prose-session strong { font-weight: 650; color: var(--txt); }
+.prose-session em { color: var(--dim); }
+.prose-session a {
+  color: var(--teal);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.prose-session a:hover { text-decoration-thickness: 2px; }
+.prose-session h1 {
+  font-size: 30px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+}
+.prose-session h2 {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 3rem 0 1.25rem;
+}
+.prose-session h2::before {
+  content: '## ';
+  color: var(--faint);
+}
+.prose-session h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 2.25rem 0 0.75rem;
+}
+.prose-session ul,
+.prose-session ol {
+  margin: 0 0 1.35em 1.4em;
+}
+.prose-session li { margin-bottom: 0.5em; }
+.prose-session ul li { list-style: disc; }
+.prose-session ol li { list-style: decimal; }
+.prose-session li::marker { color: var(--faint); }
+.prose-session blockquote {
+  border-left: 2px solid var(--teal);
+  padding-left: 1.25rem;
+  color: var(--dim);
+  margin: 1.75em 0;
+}
+.prose-session code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+}
+.prose-session pre {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.1rem 1.3rem;
+  overflow-x: auto;
+  margin: 1.75em 0;
+}
+.prose-session pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.prose-session hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2.5em 0;
+}
+.prose-session table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75em 0;
+  font-size: 15px;
+}
+.prose-session th,
+.prose-session td {
+  border: 1px solid var(--line);
+  padding: 0.6em 0.9em;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-session thead th {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  background: var(--panel2);
+}
+.prose-session tbody tr:nth-child(even) {
+  background: var(--panel2);
+}
+.prose-session table :is(p) {
+  margin-bottom: 0;
+}

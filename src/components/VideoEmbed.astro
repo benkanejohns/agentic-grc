@@ -1,0 +1,38 @@
+---
+interface Props {
+  /** Full YouTube or Vimeo URL, or a YouTube video ID */
+  src: string;
+  title: string;
+}
+
+const { src, title } = Astro.props;
+
+function toEmbedUrl(input: string): string {
+  // YouTube: full URL, short URL, or bare ID. Uses the no-cookie domain.
+  const yt = input.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([\w-]{11})/
+  );
+  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}`;
+  if (/^[\w-]{11}$/.test(input))
+    return `https://www.youtube-nocookie.com/embed/${input}`;
+
+  const vimeo = input.match(/vimeo\.com\/(\d+)/);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
+
+  return input;
+}
+
+const embedUrl = toEmbedUrl(src);
+---
+
+<figure class="my-8">
+  <div class="relative w-full overflow-hidden rounded border border-line bg-panel" style="aspect-ratio: 16 / 9;">
+    <iframe
+      src={embedUrl}
+      title={title}
+      class="absolute inset-0 h-full w-full"
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen></iframe>
+  </div>
+</figure>

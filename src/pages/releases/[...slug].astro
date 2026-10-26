@@ -1,0 +1,69 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import VideoEmbed from '@/components/VideoEmbed.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('releases', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = new Intl.DateTimeFormat('en-AU', {
+  year: 'numeric',
+  month: 'long',
+});
+---
+
+<Base
+  title={`${post.data.title} | Agentic GRC`}
+  description={post.data.description}
+  path={`/releases/${post.id}/`}
+  ogType="article"
+>
+  <article class="mx-auto max-w-[860px] px-6 pt-16">
+    <header class="mb-10">
+      <p class="promptline">
+        <span class="p">$</span> cat releases/{post.id}.md
+      </p>
+      <p class="mb-4 font-mono text-xs tracking-[0.16em] text-dim">
+        {fmt.format(post.data.date).toUpperCase()}
+        <span class="text-teal">
+          &middot; {post.data.kind === 'video' ? 'VIDEO EPISODE' : 'ARTICLE'}
+        </span>
+      </p>
+      <h1
+        class="text-3xl font-semibold leading-tight tracking-[-0.01em] sm:text-4xl"
+      >
+        {post.data.title}
+      </h1>
+      <p class="mt-4 text-base leading-relaxed text-dim">
+        {post.data.description}
+      </p>
+    </header>
+
+    {
+      post.data.kind === 'video' && post.data.video && (
+        <VideoEmbed src={post.data.video} title={post.data.title} />
+      )
+    }
+
+    <div class="prose-session">
+      <Content />
+    </div>
+
+    <p class="mt-16 border-t border-line pt-6">
+      <a
+        href="/releases/"
+        class="font-mono text-xs tracking-[0.1em] text-teal no-underline hover:underline"
+      >
+        &larr; cd ../releases
+      </a>
+    </p>
+  </article>
+</Base>
